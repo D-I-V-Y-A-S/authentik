@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def getServerStatus():
+    print("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
     return jsonify({"status": "ok","message" : "Server Running..."}), 200
 
 @app.route("/authentik-webhook", methods=["POST"])
