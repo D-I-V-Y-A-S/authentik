@@ -31,7 +31,7 @@ def compare_user(username_to_search):
     # username_to_search = "Demo"
     print("Jira controller started")
     response = requests.get(
-        f"{BASE_URL}/api/v3/core/users/?username={username_to_search}",
+        f"{BASE_URL}/api/v3/core/users/?name={username_to_search}",
         headers=headers
     )
     if response.status_code == 200:
