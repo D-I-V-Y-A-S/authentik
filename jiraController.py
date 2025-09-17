@@ -36,7 +36,7 @@ def compare_user(username_to_search):
     )
     if response.status_code == 200:
         users = response.json()
-        # print(users)
+        print(users)
         if users["results"]:  
             #fetch user data from authentik
             user = users["results"][0]  
