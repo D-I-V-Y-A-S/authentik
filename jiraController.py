@@ -29,6 +29,7 @@ def deactivate_user(account_id):
 def compare_user(username_to_search):
 # def compare_user():
     # username_to_search = "Demo"
+    print("Jira controller started")
     response = requests.get(
         f"{BASE_URL}/api/v3/core/users/?username={username_to_search}",
         headers=headers
@@ -65,4 +66,5 @@ def compare_user(username_to_search):
                 print("rest")
     else:
             print("Error:", response.status_code, response.text)
+    print("Jira controller ended")
 # compare_user()
