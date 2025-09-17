@@ -1,5 +1,6 @@
 import ast
 from flask import Flask, request, jsonify
+import jiraController
 
 app = Flask(__name__)
 
@@ -8,11 +9,11 @@ def getServerStatus():
     print("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
     return jsonify({"status": "ok","message" : "Server Running..."}), 200
 
-@app.route("/authentik-webhook", methods=["POST"])
+@app.route("/authentik-webhook", methods=["GET"])
 def handle_authentik_event():
-    data = request.get_json(force=True, silent=True) 
+    # data = request.get_json(force=True, silent=True) 
+    data =  {'body': "model_updated: {'model': {'pk': 22, 'app': 'authentik_core', 'name': 'user1', 'model_name': 'user'}, 'http_request': {'args': {}, 'path': '/api/v3/core/users/', 'method': 'POST', 'request_id': 'db414c7a890140138fdf6c1e10ca7ea3', 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'}}", 'severity': 'alert', 'user_email': 'divya.s@cprime.com', 'user_username': 'divyas', 'event_user_email': 'divya.s@cprime.com', 'event_user_username': 'divyas'}
     print("Raw payload:", data)
-    # data =  {'body': "model_updated: {'model': {'pk': 22, 'app': 'authentik_core', 'name': 'user1', 'model_name': 'user'}, 'http_request': {'args': {}, 'path': '/api/v3/core/users/', 'method': 'POST', 'request_id': 'db414c7a890140138fdf6c1e10ca7ea3', 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'}}", 'severity': 'alert', 'user_email': 'divya.s@cprime.com', 'user_username': 'divyas', 'event_user_email': 'divya.s@cprime.com', 'event_user_username': 'divyas'}
 
     body_str = data.get("body", "")
     
@@ -24,6 +25,9 @@ def handle_authentik_event():
             name = body_dict.get("model", {}).get("name")
         else:
             name = None
+        if(name):
+            jiraController.compare_user(username_to_search = name)
+            
     except Exception as e:
         print("Error parsing body:", e)
         name = None
