@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def getServerStatus():
-    print("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+    print("Hi")
     return jsonify({"status": "ok","message" : "Server Running..."}), 200
 
 @app.route("/authentik-webhook", methods=["POST"])
@@ -16,18 +16,15 @@ def handle_authentik_event():
     print("Raw payload:", data)
 
     body_str = data.get("body", "")
-    
-    # Convert the string to a Python dict safely
     try:
-        # Strip the prefix "model_updated: " and parse the rest
         if body_str.startswith("model_updated: "):
             body_dict = ast.literal_eval(body_str.replace("model_updated: ", "", 1))
             name = body_dict.get("model", {}).get("name")
         else:
             name = None
         if(name):
-            jiraController.compare_user(username_to_search = name)
-            
+            print("Jira controller called.")
+            jiraController.compare_user(username_to_search = name)          
     except Exception as e:
         print("Error parsing body:", e)
         name = None
@@ -38,5 +35,4 @@ def handle_authentik_event():
 
 
 if __name__ == "__main__":
-    # Run Flask app in debug mode so you can see logs
     app.run(host="0.0.0.0", port=5000, debug=True)
