@@ -1,7 +1,6 @@
 import ast
 from flask import Flask, request, jsonify
-# import jiraController
-import jiraController_copy
+import jiraController
 
 app = Flask(__name__)
 
@@ -25,9 +24,7 @@ def handle_authentik_event():
             name = None
         if(name):
             print("Jira controller called.")
-            # jiraController.compare_user(username_to_search = name)
-            jiraController_copy.compare_user(username_to_search = name)          
-            
+            jiraController.compare_user(username_to_search = name)          
     except Exception as e:
         print("Error parsing body:", e)
         name = None
